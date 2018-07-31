@@ -4,22 +4,26 @@ import pandas as pd
 import numpy as np
 import os
 
-class Paiter():
+class Painter():
     """docstring for Paiter."""
-    def __init__(self, p_kind,
+    def __init__(self, category='line',
                 dir = None,
-                shadow = True,
                 colorful = 'favorite',):
         self.colorful = colorful
-        self.shadow = shadow
-        self.p_kind = p_kind
+        self.category = category
+        self.color_mark = 0
 
-        sns.set(style="white", palette="muted", color_codes=True)
+        sns.set(style="white", color_codes=True)
         if not dir:
             self.data = self.random_data()
         else:
             # automaticly read all valid files.
             pass
+        if self.colorful == 'favorite':
+            colors = ["blue","orange","violet","green","red"]
+            shadow_colors = ["light blue","light orange","light violet","light green","baby pink"]
+            self.color_palette = sns.xkcd_palette(colors)
+            self.shadow_color = sns.xkcd_palette(shadow_colors)
 
     def random_data(self, times = 5):
         return pd.DataFrame([self.random_feature() + np.random.randint(5) for i in range(times)])
@@ -29,16 +33,38 @@ class Paiter():
         y = np.log(x + 1) + np.random.standard_normal(length)
         return y
 
-    def paiter(self, gamma=0.6):
-        if self.p_kind == 'line':
-            self._plot_line(gamma)
+    def colorful_world(self, pair=True):
+        k = self.color_mark
+        self.color_mark += 1
+        if self.color_mark >= len(self.color_palette):self.color_mark -= len(self.color_palette)
+        if pair:
+            return self.color_palette[k], self.shadow_color[k]
+        else:
+            return self.color_palette[k]
 
-    def _plot_line(self, gamma=1):
+    def painte(self, gamma=0.6):
+        with self.color_palette:
+            if self.category == 'line':
+                self._plot_line(gamma)
+                self.data -= 3
+                self._plot_line(gamma)
+                self.data -= 3
+                self._plot_line(gamma)
+                self.data -= 3
+                plt.savefig("./example.jpg")
+
+
+    def _plot_line(self, gamma, shadow=True):
         mean = np.mean(self.data, axis=0)
+        c, sc = self.colorful_world()
         for i in range(1,len(mean)):
             mean[i] = mean[i] * gamma + mean[i-1] * (1 - gamma)
-        plt.plot(mean)
-        if self.shadow:
+        plt.plot(mean, color=c)
+        if shadow:
             std = np.std(self.data, axis=0)
-            plt.fill_between(np.arange(len(mean)), mean-std, mean+std, alpha=0.4)
-        plt.show()
+            for i in range(1,len(std)):
+                std[i] = std[i] * gamma + std[i-1] * (1 - gamma)
+            plt.fill_between(np.arange(len(mean)), mean-std, mean+std, facecolor=sc, alpha=0.4)
+
+p = Painter()
+p.painte()
