@@ -14,14 +14,14 @@ figures are required.
 
   :heart:A example for random data:
 
-```
-python Painter.py
-```
+  ```
+  python Painter.py
+  ```
 
-<img src="https://github.com/Linging/Painter/blob/master/images/example.jpg" width="500">
+  <img src="https://github.com/Linging/Painter/blob/master/images/example.jpg" width="500">
 
-  And you can plot your figure:
+  :heart:And you can plot your figure:
 
-```
-python Painter.py -k='line' -d='./data/' -sh=True
-```
+  ```
+  python Painter.py -k='line' -d='./data/' -sh=True
+  ```
