@@ -68,11 +68,11 @@ class Painter():
                 for name, each_line in self.data.items():
                     self._plot_line(gamma, each_line, name, stretch, shadow)
                 plt.xlabel('Frames')
-                plt.ylabel('Travel Time(s)')
+                plt.ylabel('Rewards')
                 plt.legend(loc='upper left')
                 plt.savefig(self.dir + name + ".jpg")
                 plt.show()
-                
+
 
     def _plot_line(self, gamma, data, name, stretch,shadow=True):
         mean = np.mean(data, axis=0)
@@ -100,6 +100,6 @@ if __name__ == '__main__':
     dir = args.data_dir
     stretch = args.stretch
     gamma = args.gamma
-    
+
     p = Painter(dir = dir, category = kind)
     p.painte(stretch = stretch, shadow = shadow, gamma = gamma)

@@ -10,10 +10,18 @@ figures are required.
 - numpy, pandas, argparse
 
 #### Documentation
-* 1.Line Chart (error area)
-A example for random data:
-`python Painter.py`
+* Line Chart (error area)
 
-![line chart](https://github.com/Linging/Painter/tree/master/images/example.jpg)
+A example for random data:
+
+```
+python Painter.py
+```
+
+<img src="https://github.com/Linging/Painter/blob/master/images/example.jpg" width="500">
+
 And you can plot your figure:
-`python Painter.py -k='line' -d='./data/' -sh=True`
+
+```
+python Painter.py -k='line' -d='./data/' -sh=True
+```
