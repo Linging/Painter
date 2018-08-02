@@ -12,8 +12,8 @@ figures are required.
 #### Documentation
 * 1.Line Chart (error area)
 A example for random data:
-> python Painter.py
+`python Painter.py`
 
-![line chart](https://github.com/Linging/Painter/tree/master/images)
+![line chart](https://github.com/Linging/Painter/tree/master/images/example.jpg)
 And you can plot your figure:
-> python Painter.py -k='line' -d='./data/' -sh=True
+`python Painter.py -k='line' -d='./data/' -sh=True`
