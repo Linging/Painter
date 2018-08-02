@@ -12,7 +12,7 @@ figures are required.
 #### Documentation
 * Line Chart (error area)
 
-A example for random data:
+  :heart:A example for random data:
 
 ```
 python Painter.py
@@ -20,7 +20,7 @@ python Painter.py
 
 <img src="https://github.com/Linging/Painter/blob/master/images/example.jpg" width="500">
 
-And you can plot your figure:
+  And you can plot your figure:
 
 ```
 python Painter.py -k='line' -d='./data/' -sh=True
