@@ -4,6 +4,7 @@ import pandas as pd
 import numpy as np
 import os
 import argparse
+from collections import OrderedDict
 
 class Painter():
     """docstring for Paiter."""
@@ -14,7 +15,7 @@ class Painter():
         self.colorful = colorful
         self.category = category
         self.color_mark = 0
-        self.data = {}
+        self.data = OrderedDict()
         self.dir = dir
         self.axis = axis
 
