@@ -21,9 +21,12 @@ class Painter():
 
         sns.set(style="whitegrid", color_codes=True)
         if dir == '':
-            self.data['random-1'] = self.random_data()
-            self.data['random-2'] = self.random_data() - 2
-            self.data['random-3'] = self.random_data() - 4
+            if self.category == 'line':
+                self.data['random-1'] = self.random_data()
+                self.data['random-2'] = self.random_data() - 2
+                self.data['random-3'] = self.random_data() - 4
+            elif self.category == '36d':
+                self.data['random'] = np.array([np.sin(np.linspace(0,20,201)) + np.random.rand() for _ in range(20)])
         else:
             files = os.listdir(dir)
             self.wanted = [i for i in files if i[-3:] == 'csv']
@@ -73,6 +76,9 @@ class Painter():
                 plt.legend(loc='upper left')
                 plt.savefig(self.dir + name + ".jpg")
                 plt.show()
+            elif self.category == '36d':
+                for name, each_plot in self.data.items():
+                    self._plot_36d(name, each_plot)
 
 
     def _plot_line(self, gamma, data, name, stretch,shadow=True):
@@ -86,6 +92,51 @@ class Painter():
             for i in range(1,len(std)):
                 std[i] = std[i] * (1 - gamma) + std[i-1] * gamma
             plt.fill_between(stretch*np.arange(len(mean)), mean-std, mean+std, facecolor=sc, alpha=0.4)
+
+    def _plot_36d(self, name, data, font="DejaVu Sans",color_bar=True):
+        
+        from matplotlib import cm
+        from mpl_toolkits.mplot3d import Axes3D
+
+        if not isinstance(data, (np.ndarray, pd.DataFrame)):
+            print("Type of data should be DataFrame.")
+            return
+        if isinstance(data, pd.DataFrame):
+            if isinstance(data.columns[0], int):
+                x = np.array(data.columns)
+            else:
+                x = np.arange(data.shape[1])
+            if isinstance(data.index[0], int):
+                y = np.array(data.index)
+            else:
+                y = np.arange(data.shape[1])
+        else:
+            x = np.arange(data.shape[1])
+            y = np.arange(data.shape[0])
+
+        x, y = np.meshgrid(x,y)
+        data = data.values
+
+        if not x.shape == data.shape:
+            print("Check 3D plot data shape, which should be: ", self.data['z'].shape)
+            return
+
+        fig = plt.figure()
+        ax = Axes3D(fig)
+
+        if color_bar:
+            surf = ax.plot_surface(x, y, data, cmap=cm.coolwarm, linewidth=0, antialiased=False)
+            bar = fig.colorbar(surf, shrink=0.5, aspect=5)
+            bar.ax.tick_params(labelsize=16)
+            barlabels = bar.ax.get_yticklabels()
+            [label.set_fontname(font) for label in barlabels]
+        else:
+            surf = ax.plot_wireframe(x, y, data)
+        labels = ax.get_xticklabels() + ax.get_yticklabels() + ax.get_zticklabels()
+        [label.set_fontname(font) for label in labels]
+        plt.tick_params(labelsize=16)
+        plt.savefig(self.dir + name + ".jpg", dpi=150)
+        plt.show()
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description=None)
